@@ -65,7 +65,7 @@
 
         fullData = response.getDataTable();
 
-        // Determinar columnas visibles (excluir A [0], L [11] que es la del stock oculto)
+        // Determinar columnas visibles (excluir A [0], L [11])
         visibleIndexes = [];
         for (let i = 0; i < fullData.getNumberOfColumns(); i++) {
           if ([0, 11].includes(i)) continue;
@@ -91,9 +91,12 @@
       }
 
       for (let i = 0; i < fullData.getNumberOfRows(); i++) {
-        const stockValue = fullData.getValue(i, 11); // Columna L (stock oculto)
+        const stockValue = fullData.getValue(i, 11); // Columna L
 
-        if (!showAll && stockValue != "1" && stockValue != 1) continue;
+        // Mostrar si está vacío, o contiene 1, o si se marca la casilla
+        const isDisponible = stockValue === null || stockValue === "" || stockValue === 1 || stockValue === "1";
+
+        if (!showAll && !isDisponible) continue;
 
         let include = !searchTerm;
         let row = [];
@@ -124,3 +127,4 @@
   </script>
 </body>
 </html>
+
